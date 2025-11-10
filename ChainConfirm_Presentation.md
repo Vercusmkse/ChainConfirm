@@ -2,14 +2,12 @@
 
 ---
 
-## 1. Title: ChainConfirm
+##  ChainConfirm
 
-**Subtitle:** Decentralized Escrow & Trust for Social Commerce.
+ Decentralized Escrow & Trust for Social Commerce.
 
-**Tagline:** Replacing "Trust Me" with "Trust The Code."
+Replacing "Trust Me" with "Trust The Code."
 
-*Presented by: [Your Name/Team Name]*
-*Date: November 2025*
 
 ---
 
