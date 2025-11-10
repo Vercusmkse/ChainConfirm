@@ -1,0 +1,85 @@
+type User @entity {
+  "The user's Ethereum address"
+  id: ID!
+
+  "Total number of transactions this user has participated in"
+  totalTransactions: BigInt!
+
+  "Total number of reviews this user has received"
+  totalReviews: BigInt!
+
+  "The sum of all ratings received, used to calculate the average"
+  ratingSum: BigInt!
+
+  "A list of all transactions this user has been a part of"
+  transactions: [Transaction!]! @derivedFrom(field: "participants")
+
+  "A list of all reviews this user has given"
+  reviewsGiven: [Review!]! @derivedFrom(field: "reviewer")
+
+  "A list of all reviews this user has received"
+  reviewsReceived: [Review!]! @derivedFrom(field: "reviewee")
+}
+
+type Transaction @entity {
+  "A unique ID for the transaction (bytes32 from the contract)"
+  id: ID!
+
+  "The buyer in the transaction"
+  buyer: User!
+
+  "The seller in the transaction"
+  seller: User!
+
+  "Both participants of the transaction, for easier filtering"
+  participants: [User!]!
+
+  "The amount of the transaction in Wei"
+  amount: BigInt!
+
+  "The current status of the transaction (Locked, Shipped, Completed, etc.)"
+  status: String!
+
+  "Timestamp of when the transaction was created"
+  createdAt: BigInt!
+
+  "Timestamp of when the transaction was completed, if applicable"
+  completedAt: BigInt
+
+  "Reviews associated with this transaction"
+  reviews: [Review!]! @derivedFrom(field: "transaction")
+}
+
+type Review @entity {
+  "A unique ID for the review, in the format: {transactionId}-{reviewerAddress}"
+  id: ID!
+
+  "The transaction this review belongs to"
+  transaction: Transaction!
+
+  "The user who wrote the review"
+  reviewer: User!
+
+  "The user who received the review"
+  reviewee: User!
+
+  "The rating given, from 1 to 5"
+  rating: Int!
+
+  "Timestamp of when the review was left"
+  timestamp: BigInt!
+}
+
+type WeeklyWinner @entity {
+  "A fixed ID for this entity, e.g., 'current'"
+  id: ID!
+
+  "The address of the weekly best buyer"
+  buyer: User!
+
+  "The address of the weekly best seller"
+  seller: User!
+
+  "Timestamp of when the winners were last updated"
+  updatedAt: BigInt!
+}

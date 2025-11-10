@@ -1,0 +1,35 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: ChainConfirm
+    network: sepolia # You can change this to your target network (e.g., mainnet, polygon)
+    source:
+      address: "YOUR_DEPLOYED_CONTRACT_ADDRESS" # IMPORTANT: Replace with your contract address
+      abi: ChainConfirm
+      startBlock: 0 # IMPORTANT: Replace with the block number where your contract was deployed
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - User
+        - Transaction
+        - Review
+        - WeeklyWinner # New entity
+      abis:
+        - name: ChainConfirm
+          file: ./abis/ChainConfirm.json
+      eventHandlers:
+        - event: UserRegistered(indexed address)
+          handler: handleUserRegistered
+        - event: TransactionCreated(indexed bytes32,indexed address,indexed address,uint256)
+          handler: handleTransactionCreated
+        - event: TransactionCompleted(indexed bytes32)
+          handler: handleTransactionCompleted
+        - event: ReviewLeft(indexed bytes32,indexed address,indexed address,uint8)
+          handler: handleReviewLeft
+        - event: WeeklyWinnerSet(indexed address,string) # New event handler
+          handler: handleWeeklyWinnerSet
+      file: ./src/mapping.ts
